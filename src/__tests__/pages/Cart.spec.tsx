@@ -1,5 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
-
+import { fireEvent, render } from '@testing-library/react';
 import { useCart } from '../../hooks/useCart';
 import Cart from '../../pages/Cart';
 
@@ -40,9 +39,8 @@ describe('Cart Page', () => {
 
     const [incrementFirstProduct] = getAllByTestId('increment-product');
     const [, decrementSecondProduct] = getAllByTestId('decrement-product');
-    const [firstProductAmount, secondProductAmount] = getAllByTestId(
-      'product-amount'
-    );
+    const [firstProductAmount, secondProductAmount] =
+      getAllByTestId('product-amount');
 
     expect(firstProductAmount).toHaveDisplayValue('1');
     expect(secondProductAmount).toHaveDisplayValue('2');

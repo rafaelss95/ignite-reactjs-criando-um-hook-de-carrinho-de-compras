@@ -1,14 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { MdShoppingBasket } from 'react-icons/md';
-
+import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.svg';
-import { Container, Cart } from './styles';
 import { useCart } from '../../hooks/useCart';
+import { Cart, Container } from './styles';
 
-const Header = (): JSX.Element => {
-  // const { cart } = useCart();
-  // const cartSize = // TODO;
+export default function Header() {
+  const { cart } = useCart();
+  const cartSize = new Set(cart.map(({ id }) => id)).size;
 
   return (
     <Container>
@@ -20,13 +19,11 @@ const Header = (): JSX.Element => {
         <div>
           <strong>Meu carrinho</strong>
           <span data-testid="cart-size">
-            {/* {cartSize === 1 ? `${cartSize} item` : `${cartSize} itens`} */}
+            {cartSize + (cartSize === 1 ? ' item' : ' itens')}
           </span>
         </div>
         <MdShoppingBasket size={36} color="#FFF" />
       </Cart>
     </Container>
   );
-};
-
-export default Header;
+}

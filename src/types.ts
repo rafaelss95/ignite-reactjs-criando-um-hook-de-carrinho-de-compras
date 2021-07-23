@@ -1,12 +1,12 @@
-export interface Product {
+export type Product = Readonly<{
   id: number;
   title: string;
   price: number;
   image: string;
   amount: number;
-}
+}>;
 
-export interface Stock {
+export type Stock = Readonly<{
   id: number;
   amount: number;
-}
+}>;

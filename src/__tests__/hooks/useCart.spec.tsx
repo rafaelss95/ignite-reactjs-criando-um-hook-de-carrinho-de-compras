@@ -1,9 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import AxiosMock from 'axios-mock-adapter';
-
 import { toast } from 'react-toastify';
+import { CartProvider, useCart } from '../../hooks/useCart';
 import { api } from '../../services/api';
-import { useCart, CartProvider } from '../../hooks/useCart';
 
 const apiMock = new AxiosMock(api);
 
@@ -214,9 +213,10 @@ describe('useCart Hook', () => {
     });
     apiMock.onGet(`products/${productId}`).reply(200, {
       id: 2,
-      title: "Tênis VR Caminhada Confortável Detalhes Couro Masculino",
+      title: 'Tênis VR Caminhada Confortável Detalhes Couro Masculino',
       price: 139.9,
-      image: "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis2.jpg"
+      image:
+        'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis2.jpg',
     });
 
     const { result, waitFor } = renderHook(useCart, {

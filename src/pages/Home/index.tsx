@@ -1,67 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
-
-import { ProductList } from './styles';
-import { api } from '../../services/api';
-import { formatPrice } from '../../util/format';
 import { useCart } from '../../hooks/useCart';
+import { api } from '../../services/api';
+import { Product } from '../../types';
+import { formatPrice } from '../../util/format';
+import { ProductList } from './styles';
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-}
-
-interface ProductFormatted extends Product {
+type ProductFormatted = Product & {
   priceFormatted: string;
-}
+};
 
-interface CartItemsAmount {
-  [key: number]: number;
-}
+type CartItemsAmount = Record<number, number>;
 
-const Home = (): JSX.Element => {
-  // const [products, setProducts] = useState<ProductFormatted[]>([]);
-  // const { addProduct, cart } = useCart();
-
-  // const cartItemsAmount = cart.reduce((sumAmount, product) => {
-  //   // TODO
-  // }, {} as CartItemsAmount)
+export default function Home() {
+  const [products, setProducts] = useState<readonly ProductFormatted[]>([]);
+  const { addProduct, cart } = useCart();
+  const cartItemsAmount = cart.reduce<CartItemsAmount>(
+    (accumulator, product) => ({
+      ...accumulator,
+      [product.id]: product.amount,
+    }),
+    {}
+  );
 
   useEffect(() => {
     async function loadProducts() {
-      // TODO
+      const { data } = await api.get<readonly Product[]>('products');
+      const products = data.map(product => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }));
+      setProducts(products);
     }
 
     loadProducts();
   }, []);
 
-  function handleAddProduct(id: number) {
-    // TODO
+  async function handleAddProduct(id: number) {
+    await addProduct(id);
   }
 
   return (
     <ProductList>
-      <li>
-        <img src="https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg" alt="Tênis de Caminhada Leve Confortável" />
-        <strong>Tênis de Caminhada Leve Confortável</strong>
-        <span>R$ 179,90</span>
-        <button
-          type="button"
-          data-testid="add-product-button"
-        // onClick={() => handleAddProduct(product.id)}
-        >
-          <div data-testid="cart-product-quantity">
-            <MdAddShoppingCart size={16} color="#FFF" />
-            {/* {cartItemsAmount[product.id] || 0} */} 2
-          </div>
+      {products.map(({ id, image, priceFormatted, title }) => (
+        <li key={id}>
+          <img src={image} alt={title} />
+          <strong>{title}</strong>
+          <span>{priceFormatted}</span>
+          <button
+            type="button"
+            data-testid="add-product-button"
+            onClick={() => handleAddProduct(id)}
+          >
+            <div data-testid="cart-product-quantity">
+              <MdAddShoppingCart size={16} color="#FFF" />
+              {cartItemsAmount[id] ?? 0}
+            </div>
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+            <span>ADICIONAR AO CARRINHO</span>
+          </button>
+        </li>
+      ))}
     </ProductList>
   );
-};
-
-export default Home;
+}

@@ -1,13 +1,12 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-
-import Routes from './routes';
-import GlobalStyles from './styles/global';
 import Header from './components/Header';
 import { CartProvider } from './hooks/useCart';
+import Routes from './routes';
+import GlobalStyles from './styles/global';
 
-const App = (): JSX.Element => {
+export default function App() {
   return (
     <BrowserRouter>
       <CartProvider>
@@ -18,6 +17,4 @@ const App = (): JSX.Element => {
       </CartProvider>
     </BrowserRouter>
   );
-};
-
-export default App;
+}

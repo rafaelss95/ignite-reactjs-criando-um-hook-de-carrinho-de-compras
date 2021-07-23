@@ -1,9 +1,8 @@
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import AxiosMock from 'axios-mock-adapter';
-import { waitFor, render, fireEvent } from '@testing-library/react';
-
-import { api } from '../../services/api';
-import Home from '../../pages/Home';
 import { useCart } from '../../hooks/useCart';
+import Home from '../../pages/Home';
+import { api } from '../../services/api';
 
 const apiMock = new AxiosMock(api);
 const mockedAddProduct = jest.fn();
